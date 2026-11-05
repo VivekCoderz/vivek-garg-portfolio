@@ -81,7 +81,9 @@ export default function Terminal({ lc, cc, gh }) {
       const res = commands[cmd]();
       res.forEach((t) => out.push({ type: "out", text: t }));
       if (cmd === "sudo hire-me") {
-        const tab = window.open(gmailUrl, "_blank", "noopener");
+        // "noopener" in the features string makes window.open return null, so detach the opener manually instead.
+        const tab = window.open(gmailUrl, "_blank");
+        if (tab) tab.opener = null;
         navigator.clipboard?.writeText(profile.email).catch(() => {});
         out.push({ type: "out", text: `${tab ? "Gmail opened ✓" : "Pop-up blocked."} Email also copied: ${profile.email}` });
         out.push({ type: "link", text: "Open in Gmail", href: gmailUrl });
