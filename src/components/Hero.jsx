@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, FileText, MapPin } from "lucide-react";
 import { profile, socials } from "@/data/profile";
 import { iconFor } from "./Icons";
+import Magnetic from "./Magnetic";
 
 function useTypewriter(words) {
   const reduce = useReducedMotion();
@@ -76,12 +77,16 @@ export default function Hero() {
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
+            <Magnetic>
             <a href="/projects" className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent to-accent-2 px-6 py-3 font-medium text-bg transition hover:shadow-[0_0_40px_-6px_var(--accent-2)]">
               See my work <ArrowDown size={16} className="transition group-hover:translate-y-0.5" />
             </a>
+            </Magnetic>
+            <Magnetic>
             <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-6 py-3 font-medium transition hover:border-accent-2/60">
               <FileText size={16} /> Resume
             </a>
+            </Magnetic>
           </motion.div>
 
           <motion.div variants={item} className="mt-8 flex items-center gap-3">

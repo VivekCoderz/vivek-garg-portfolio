@@ -155,14 +155,43 @@ function TiltCard({ p, i }) {
   );
 }
 
+const FILTERS = ["All", "React", "Next.js", "Node.js", "MongoDB", "Socket.io", "Redis"];
+
 export function Projects({ preview = false, withTitle = true }) {
-  const items = preview ? projects.slice(0, 3) : projects;
+  const [tech, setTech] = useState("All");
+  const all = preview ? projects.slice(0, 3) : projects;
+  const items = tech === "All" ? all : all.filter((p) => p.tech.some((t) => t.toLowerCase().includes(tech.toLowerCase())));
   return (
     <section id="projects" className={`mx-auto max-w-6xl px-4 sm:px-6 ${withTitle ? "py-24" : "pb-24 pt-2"}`}>
       {withTitle && <SectionTitle kicker="// projects" title={preview ? "Featured projects" : "Things I've built"} sub="From my own startup's store to campus tools. Most of them are live, so try them." />}
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((p, i) => <TiltCard key={p.title} p={p} i={i} />)}
-      </div>
+      {!preview && (
+        <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter projects by technology">
+          {FILTERS.map((f) => {
+            const n = f === "All" ? projects.length : projects.filter((p) => p.tech.some((t) => t.toLowerCase().includes(f.toLowerCase()))).length;
+            if (!n) return null;
+            return (
+              <button
+                key={f}
+                onClick={() => setTech(f)}
+                aria-pressed={tech === f}
+                className={`relative rounded-full px-4 py-1.5 text-sm transition ${tech === f ? "text-bg" : "border border-line text-muted hover:text-ink"}`}
+              >
+                {tech === f && <motion.span layoutId="proj-tab" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
+                <span className="relative">{f} <span className="opacity-60">{n}</span></span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+      <motion.div layout className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <AnimatePresence mode="popLayout">
+          {items.map((p, i) => (
+            <motion.div key={p.title} layout initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.92 }} transition={{ duration: 0.25 }}>
+              <TiltCard p={p} i={i} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
       {preview && <MoreLink href="/projects">All {projects.length} projects</MoreLink>}
     </section>
   );

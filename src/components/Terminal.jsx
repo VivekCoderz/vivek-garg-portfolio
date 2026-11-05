@@ -1,0 +1,167 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { Reveal, SectionTitle } from "./ui";
+import { profile, skills, projects, academics, certificates, socials } from "@/data/profile";
+
+const PROMPT = "visitor@vivekgarg:~$";
+
+// Interactive terminal: try `help`, Tab to autocomplete, ↑ ↓ for history.
+export default function Terminal({ lc, cc, gh }) {
+  const total = lc.solved + (cc?.solved ?? 0);
+
+  const commands = {
+    help: () => [
+      "Available commands:",
+      "  whoami      who is Vivek",
+      "  skills      tech stack",
+      "  projects    things I've built",
+      "  stats       live coding stats",
+      "  education   college & grades",
+      "  achievements",
+      "  contact     how to reach me",
+      "  open <github|linkedin|leetcode|codechef|resume>",
+      "  clear",
+    ],
+    whoami: () => [`${profile.name}: ${profile.roles.join(" · ")}`, profile.tagline],
+    skills: () => skills.map((g) => `${g.group.padEnd(10)} ${g.items.join(", ")}`),
+    projects: () => projects.map((p) => `▸ ${p.title.padEnd(22)} ${p.tech.slice(0, 3).join(", ")}`).concat("", "Type `open github` to see the code."),
+    stats: () => [
+      `DSA problems solved  ${total}+`,
+      `  LeetCode           ${lc.solved} (E ${lc.easy} · M ${lc.medium} · H ${lc.hard}), contest rating ${lc.rating ?? "–"}`,
+      `  CodeChef           ${cc?.solved ?? "–"} solved, rating ${cc?.rating ?? "–"}`,
+      `GitHub               ${gh.repos} repos · ${gh.stars} stars`,
+    ],
+    education: () => [
+      "B.Tech CSE, Geeta University (2024–2028)",
+      `CGPA ${academics.cgpa}  |  ` + academics.semesters.map((s) => `${s.sem}: ${s.sgpa}`).join("  "),
+    ],
+    achievements: () => certificates.filter((c) => c.highlight).map((c) => `🏆 ${c.title}`),
+    contact: () => [`email     ${profile.email}`, `phone     ${profile.phone}`, ...socials.map((s) => `${s.name.toLowerCase().padEnd(9)} ${s.url}`)],
+    "sudo hire-me": () => ["[sudo] password for recruiter: ********", "Access granted ✓  Opening email…", `mailto:${profile.email}`],
+  };
+
+  const [lines, setLines] = useState([
+    { type: "out", text: "Welcome! Type `help` to see what I can do. (Tab autocompletes, ↑ ↓ history)" },
+  ]);
+  const [input, setInput] = useState("");
+  const [history, setHistory] = useState([]);
+  const [hIndex, setHIndex] = useState(-1);
+  const bodyRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const b = bodyRef.current;
+    if (b) b.scrollTop = b.scrollHeight;
+  }, [lines]);
+
+  const run = (raw) => {
+    const cmd = raw.trim().toLowerCase();
+    const out = [{ type: "in", text: raw }];
+    if (!cmd) return setLines((l) => [...l, ...out]);
+    if (cmd === "clear") return setLines([]);
+
+    if (cmd.startsWith("open ")) {
+      const what = cmd.slice(5).trim();
+      const s = socials.find((x) => x.name.toLowerCase() === what);
+      const url = what === "resume" ? profile.resumeUrl : s?.url;
+      if (url) {
+        window.open(url, "_blank", "noopener");
+        out.push({ type: "out", text: `Opening ${what}…` });
+      } else out.push({ type: "err", text: `open: unknown target "${what}". Try github, linkedin, leetcode, codechef, resume` });
+    } else if (commands[cmd]) {
+      const res = commands[cmd]();
+      res.forEach((t) => out.push({ type: "out", text: t }));
+      if (cmd === "sudo hire-me") window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent("Internship opportunity")}`;
+    } else {
+      out.push({ type: "err", text: `command not found: ${cmd}. Type \`help\`.` });
+    }
+    setLines((l) => [...l, ...out]);
+    setHistory((h) => [raw, ...h].slice(0, 30));
+    setHIndex(-1);
+  };
+
+  const onKey = (e) => {
+    if (e.key === "Enter") {
+      run(input);
+      setInput("");
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const opts = [...Object.keys(commands), "open github", "open linkedin", "open leetcode", "open codechef", "open resume", "clear"];
+      const m = opts.find((o) => o.startsWith(input.toLowerCase()) && o !== input.toLowerCase());
+      if (m) setInput(m);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const i = Math.min(hIndex + 1, history.length - 1);
+      if (history[i] !== undefined) {
+        setHIndex(i);
+        setInput(history[i]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const i = hIndex - 1;
+      setHIndex(Math.max(i, -1));
+      setInput(i >= 0 ? history[i] : "");
+    } else if (e.key === "l" && e.ctrlKey) {
+      e.preventDefault();
+      setLines([]);
+    }
+  };
+
+  const quick = ["help", "whoami", "stats", "projects", "sudo hire-me"];
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 pt-24 sm:px-6" aria-labelledby="terminal-title">
+      <SectionTitle kicker="// try it" title={<span id="terminal-title">Talk to my terminal</span>} sub="A tiny shell with live data. Type a command or tap one below." />
+      <Reveal>
+        <div className="card overflow-hidden font-mono text-sm" onClick={() => inputRef.current?.focus()}>
+          <div className="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2.5">
+            <span className="size-3 rounded-full bg-[#ff5f57]" />
+            <span className="size-3 rounded-full bg-[#febc2e]" />
+            <span className="size-3 rounded-full bg-[#28c840]" />
+            <span className="ml-3 text-xs text-muted">vivek@portfolio: ~</span>
+          </div>
+          <div ref={bodyRef} className="h-72 overflow-y-auto p-4 leading-relaxed" aria-live="polite">
+            {lines.map((l, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.15 }} className="whitespace-pre-wrap break-words">
+                {l.type === "in" ? (
+                  <span><span className="text-accent-2">{PROMPT}</span> {l.text}</span>
+                ) : (
+                  <span className={l.type === "err" ? "text-hard" : "text-ink/85"}>{l.text}</span>
+                )}
+              </motion.div>
+            ))}
+            <div className="flex items-center gap-2">
+              <span className="shrink-0 text-accent-2">{PROMPT}</span>
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={onKey}
+                aria-label="Terminal command"
+                autoComplete="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                className="flex-1 bg-transparent text-ink caret-accent-2 outline-none"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 border-t border-line px-4 py-3">
+            {quick.map((q) => (
+              <button
+                key={q}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  run(q);
+                }}
+                className="rounded-full border border-line px-3 py-1 text-xs text-muted transition hover:border-accent-2/60 hover:text-ink"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}

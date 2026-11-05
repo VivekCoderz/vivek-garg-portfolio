@@ -41,6 +41,15 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.dispatchEvent(new Event("open-palette"))}
+            aria-label="Open command palette (Ctrl K)"
+            title="Search (Ctrl K)"
+            className="hidden items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs text-muted transition hover:border-white/30 hover:text-ink lg:inline-flex"
+          >
+            <span>Search</span>
+            <kbd className="rounded bg-surface-2 px-1.5 font-mono text-[10px]">Ctrl K</kbd>
+          </button>
           <Link href="/#contact" className="hidden rounded-full border border-line px-4 py-1.5 text-sm transition hover:border-white/30 sm:inline-block">
             Contact
           </Link>

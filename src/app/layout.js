@@ -3,6 +3,8 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CommandPalette from "@/components/CommandPalette";
+import Spotlight from "@/components/Spotlight";
 import { siteUrl, siteName, defaultDescription, keywords, personJsonLd } from "@/lib/site";
 import { profile } from "@/data/profile";
 
@@ -48,6 +50,8 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         <Providers>
+          <Spotlight />
+          <CommandPalette />
           <Navbar />
           <main id="main" className="flex-1">{children}</main>
           <Footer />
