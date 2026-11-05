@@ -75,7 +75,7 @@ export default function Terminal({ lc, cc, gh }) {
     } else if (commands[cmd]) {
       const res = commands[cmd]();
       res.forEach((t) => out.push({ type: "out", text: t }));
-      if (cmd === "sudo hire-me") window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent("Internship opportunity")}`;
+      if (cmd === "sudo hire-me") window.location.assign(`mailto:${profile.email}?subject=${encodeURIComponent("Internship opportunity")}`);
     } else {
       out.push({ type: "err", text: `command not found: ${cmd}. Type \`help\`.` });
     }
