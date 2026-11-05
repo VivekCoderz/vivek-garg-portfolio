@@ -80,7 +80,7 @@ export default function CommandPalette() {
   }, [close]);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 10);
+    if (open) setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 10);
   }, [open]);
 
   useEffect(() => {

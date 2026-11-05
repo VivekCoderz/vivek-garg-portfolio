@@ -41,8 +41,11 @@ export default function Terminal({ lc, cc, gh }) {
     "sudo hire-me": () => ["[sudo] password for recruiter: ********", "Access granted ✓  Opening email…", `mailto:${profile.email}`],
   };
 
-  const [lines, setLines] = useState([
-    { type: "out", text: "Welcome! Type `help` to see what I can do. (Tab autocompletes, ↑ ↓ history)" },
+  const [lines, setLines] = useState(() => [
+    { type: "in", text: "whoami" },
+    ...commands.whoami().map((text) => ({ type: "out", text })),
+    { type: "out", text: "" },
+    { type: "hint", text: "👆 That was a demo. Click a command button below, or type one here and press Enter." },
   ]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([]);
@@ -108,58 +111,94 @@ export default function Terminal({ lc, cc, gh }) {
     }
   };
 
-  const quick = ["help", "whoami", "stats", "projects", "sudo hire-me"];
+  const quick = [
+    { cmd: "whoami", label: "👤 whoami" },
+    { cmd: "stats", label: "📊 stats" },
+    { cmd: "skills", label: "🛠 skills" },
+    { cmd: "projects", label: "🚀 projects" },
+    { cmd: "education", label: "🎓 education" },
+    { cmd: "achievements", label: "🏆 achievements" },
+    { cmd: "contact", label: "✉️ contact" },
+    { cmd: "sudo hire-me", label: "😎 sudo hire-me" },
+    { cmd: "clear", label: "🧹 clear" },
+  ];
+
+  // Focus the input without making the whole page jump to it.
+  const focusInput = () => inputRef.current?.focus({ preventScroll: true });
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-24 sm:px-6" aria-labelledby="terminal-title">
-      <SectionTitle kicker="// try it" title={<span id="terminal-title">Talk to my terminal</span>} sub="A tiny shell with live data. Type a command or tap one below." />
+      <SectionTitle
+        kicker="// try it"
+        title={<span id="terminal-title">Talk to my terminal</span>}
+        sub="A tiny command line with live data about me. No typing needed: just click a button."
+      />
       <Reveal>
-        <div className="card overflow-hidden font-mono text-sm" onClick={() => inputRef.current?.focus()}>
+        <div className="card overflow-hidden font-mono text-sm">
           <div className="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2.5">
             <span className="size-3 rounded-full bg-[#ff5f57]" />
             <span className="size-3 rounded-full bg-[#febc2e]" />
             <span className="size-3 rounded-full bg-[#28c840]" />
             <span className="ml-3 text-xs text-muted">vivek@portfolio: ~</span>
           </div>
-          <div ref={bodyRef} className="h-72 overflow-y-auto p-4 leading-relaxed" aria-live="polite">
+
+          <div className="border-b border-line px-4 py-3">
+            <p className="mb-2 font-sans text-xs text-muted">👇 Click any command to run it:</p>
+            <div className="flex flex-wrap gap-2">
+              {quick.map((q) => (
+                <button
+                  key={q.cmd}
+                  onClick={() => run(q.cmd)}
+                  className="rounded-lg border border-line bg-surface px-3 py-1.5 text-xs text-ink transition hover:-translate-y-0.5 hover:border-accent-2/60 hover:bg-surface-2"
+                >
+                  {q.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div ref={bodyRef} className="max-h-80 min-h-48 overflow-y-auto p-4 leading-relaxed" aria-live="polite">
             {lines.map((l, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.15 }} className="whitespace-pre-wrap break-words">
                 {l.type === "in" ? (
                   <span><span className="text-accent-2">{PROMPT}</span> {l.text}</span>
+                ) : l.type === "hint" ? (
+                  <span className="font-sans text-xs text-accent-3">{l.text}</span>
                 ) : (
-                  <span className={l.type === "err" ? "text-hard" : "text-ink/85"}>{l.text}</span>
+                  <span className={l.type === "err" ? "text-hard" : "text-ink/85"}>{l.text || "\u00a0"}</span>
                 )}
               </motion.div>
             ))}
-            <div className="flex items-center gap-2">
-              <span className="shrink-0 text-accent-2">{PROMPT}</span>
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={onKey}
-                aria-label="Terminal command"
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                className="flex-1 bg-transparent text-ink caret-accent-2 outline-none"
-              />
-            </div>
           </div>
-          <div className="flex flex-wrap gap-2 border-t border-line px-4 py-3">
-            {quick.map((q) => (
-              <button
-                key={q}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  run(q);
-                }}
-                className="rounded-full border border-line px-3 py-1 text-xs text-muted transition hover:border-accent-2/60 hover:text-ink"
-              >
-                {q}
-              </button>
-            ))}
+
+          <div className="flex items-center gap-2 border-t border-line bg-surface px-4 py-3" onClick={focusInput}>
+            <span className="hidden shrink-0 text-accent-2 sm:inline">{PROMPT}</span>
+            <span className="shrink-0 text-accent-2 sm:hidden">$</span>
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKey}
+              placeholder='type "help" and press Enter'
+              aria-label="Terminal command"
+              autoComplete="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              className="min-w-0 flex-1 bg-transparent text-ink caret-accent-2 outline-none placeholder:text-muted/60"
+            />
+            <button
+              onClick={() => {
+                run(input);
+                setInput("");
+              }}
+              className="shrink-0 rounded-md bg-ink px-3 py-1 font-sans text-xs font-medium text-bg hover:bg-accent-2"
+            >
+              Run ↵
+            </button>
           </div>
+          <p className="border-t border-line px-4 py-2 font-sans text-[11px] text-muted">
+            Tip: <b>Tab</b> completes a command, <b>↑ ↓</b> shows previous ones, <code>open github</code> opens my profiles.
+          </p>
         </div>
       </Reveal>
     </section>
