@@ -38,8 +38,13 @@ export default function Terminal({ lc, cc, gh }) {
     ],
     achievements: () => certificates.filter((c) => c.highlight).map((c) => `🏆 ${c.title}`),
     contact: () => [`email     ${profile.email}`, `phone     ${profile.phone}`, ...socials.map((s) => `${s.name.toLowerCase().padEnd(9)} ${s.url}`)],
-    "sudo hire-me": () => ["[sudo] password for recruiter: ********", "Access granted ✓  Opening email…", `mailto:${profile.email}`],
+    "sudo hire-me": () => ["[sudo] password for recruiter: ********", "Access granted ✓  Opening Gmail in a new tab…"],
   };
+
+  // Gmail / Outlook web compose links work even when no email app is installed (mailto often does nothing on Windows).
+  const subject = encodeURIComponent("Internship opportunity");
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}&su=${subject}`;
+  const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${profile.email}&subject=${subject}`;
 
   const [lines, setLines] = useState(() => [
     { type: "in", text: "whoami" },
@@ -75,7 +80,13 @@ export default function Terminal({ lc, cc, gh }) {
     } else if (commands[cmd]) {
       const res = commands[cmd]();
       res.forEach((t) => out.push({ type: "out", text: t }));
-      if (cmd === "sudo hire-me") window.location.assign(`mailto:${profile.email}?subject=${encodeURIComponent("Internship opportunity")}`);
+      if (cmd === "sudo hire-me") {
+        const tab = window.open(gmailUrl, "_blank", "noopener");
+        navigator.clipboard?.writeText(profile.email).catch(() => {});
+        out.push({ type: "out", text: `${tab ? "Gmail opened ✓" : "Pop-up blocked."} Email also copied: ${profile.email}` });
+        out.push({ type: "link", text: "Open in Gmail", href: gmailUrl });
+        out.push({ type: "link", text: "Open in Outlook", href: outlookUrl });
+      }
     } else {
       out.push({ type: "err", text: `command not found: ${cmd}. Type \`help\`.` });
     }
@@ -162,6 +173,10 @@ export default function Terminal({ lc, cc, gh }) {
               <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.15 }} className="whitespace-pre-wrap break-words">
                 {l.type === "in" ? (
                   <span><span className="text-accent-2">{PROMPT}</span> {l.text}</span>
+                ) : l.type === "link" ? (
+                  <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-accent-2 underline underline-offset-2 hover:text-ink">
+                    → {l.text}
+                  </a>
                 ) : l.type === "hint" ? (
                   <span className="font-sans text-xs text-accent-3">{l.text}</span>
                 ) : (
