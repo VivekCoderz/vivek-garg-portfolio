@@ -33,8 +33,8 @@ export const metadata = {
   },
   twitter: { card: "summary_large_image", title: `${profile.name} · MERN Stack Developer`, description: defaultDescription },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
-  // Paste the code from Google Search Console here once the site is live:
-  // verification: { google: "xxxxxxxx" },
+  // Google Search Console ownership check
+  verification: { google: "kK9KWgRWXhcgXc02k11adf6jCEh_VHO_zevX7lVgoyo" },
 };
 
 export const viewport = { themeColor: "#07070c", colorScheme: "dark" };
