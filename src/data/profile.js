@@ -186,6 +186,7 @@ export const milestones = [
   { date: "May 2026", kind: "grade", title: "SGPA 9.21 in Semester 4", text: "My best semester yet, with A+ in Advanced DSA and Full Stack Development." },
   { date: "May 2026", kind: "award", title: "Deloitte Data Analytics simulation", text: "Completed Deloitte's data analytics job simulation on Forage.", cert: "deloitte-data-analytics" },
   { date: "Apr 2026", kind: "award", title: "Top 15, HackForge 2.0", text: "Made the top 15 teams with Team Infinity Iterators.", cert: "hackforge-2-top-15" },
+  { date: "Mar 2026", kind: "launch", title: "Launched HoliTees", text: "Sold custom Holi T-shirts to 30 students and faculty on campus, about ₹6,000 in revenue." },
   { date: "2026", kind: "launch", title: "Founded Dhagaro", text: "Launched my own home-textile ecommerce store, built end to end by me." },
   { date: "Jan 2026", kind: "award", title: "AWS Solutions Architecture simulation", text: "Completed AWS's solutions architecture job simulation on Forage.", cert: "aws-solutions-architecture" },
   { date: "Sep 2025", kind: "award", title: "2nd Position, Internal SIH 2025", text: "Our team Visioneers placed second in the internal Smart India Hackathon.", cert: "sih-2025-2nd-position" },
