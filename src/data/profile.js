@@ -31,6 +31,7 @@ export const socials = [
   { name: "LeetCode", handle: "Vivek_Garg2005", url: "https://leetcode.com/u/Vivek_Garg2005/" },
   { name: "CodeChef", handle: "vivek_codes_19", url: "https://www.codechef.com/users/vivek_codes_19" },
   { name: "Codeforces", handle: "VivekGarg2005", url: "https://codeforces.com/profile/VivekGarg2005" },
+  { name: "Facebook", handle: "Vivek Garg", url: "https://www.facebook.com/profile.php?id=61596261609210" },
 ];
 
 export const cgpa = "8.45"; // credit-weighted, Sem 1–4
