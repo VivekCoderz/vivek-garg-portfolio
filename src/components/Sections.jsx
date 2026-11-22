@@ -217,7 +217,7 @@ const catStyle = {
   Leadership: "bg-pink-400/15 text-pink-300",
 };
 
-function CertModal({ cert, onClose }) {
+export function CertModal({ cert, onClose, shared = true }) {
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -240,7 +240,7 @@ function CertModal({ cert, onClose }) {
       aria-label={cert.title}
     >
       <motion.div
-        layoutId={`cert-${cert.img}`}
+        layoutId={shared ? `cert-${cert.img}` : undefined}
         className="card relative max-h-[90vh] w-full max-w-4xl overflow-auto p-3"
         onClick={(e) => e.stopPropagation()}
       >

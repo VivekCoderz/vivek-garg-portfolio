@@ -177,6 +177,22 @@ export const timeline = [
   },
 ];
 
+// Home page "Journey" — newest first. `cert` = image name in public/certificates/ (click opens it).
+// kind: award | work | edu | launch | grade
+export const milestones = [
+  { date: "Oct 2026", kind: "award", title: "Ideathon 2026", text: "Took part in the ideathon run by the IEEE Student Branch with SCSE and Geeta Technical Hub.", cert: "ideathon-2026" },
+  { date: "Oct 2026", kind: "award", title: "Team Leader, Internal SIH 2026", text: "Led my team in the internal Smart India Hackathon round.", cert: "sih-2026-team-leader" },
+  { date: "Jun – Jul 2026", kind: "work", title: "Advanced Full Stack Internship", text: "React, Node.js and MongoDB at Geeta University × Geeta Technical Hub.", cert: "full-stack-internship-2026" },
+  { date: "May 2026", kind: "grade", title: "SGPA 9.21 in Semester 4", text: "My best semester yet, with A+ in Advanced DSA and Full Stack Development." },
+  { date: "May 2026", kind: "award", title: "Deloitte Data Analytics simulation", text: "Completed Deloitte's data analytics job simulation on Forage.", cert: "deloitte-data-analytics" },
+  { date: "Apr 2026", kind: "award", title: "Top 15, HackForge 2.0", text: "Made the top 15 teams with Team Infinity Iterators.", cert: "hackforge-2-top-15" },
+  { date: "2026", kind: "launch", title: "Founded Dhagaro", text: "Launched my own home-textile ecommerce store, built end to end by me." },
+  { date: "Jan 2026", kind: "award", title: "AWS Solutions Architecture simulation", text: "Completed AWS's solutions architecture job simulation on Forage.", cert: "aws-solutions-architecture" },
+  { date: "Sep 2025", kind: "award", title: "2nd Position, Internal SIH 2025", text: "Our team Visioneers placed second in the internal Smart India Hackathon.", cert: "sih-2025-2nd-position" },
+  { date: "Feb – Mar 2025", kind: "work", title: "DSA Intern, Coding Blocks", text: "Advanced data structures and algorithms in C++.", cert: "dsa-cpp-coding-blocks" },
+  { date: "2024", kind: "edu", title: "Started B.Tech CSE", text: "Joined Geeta University, Panipat, starting with C and problem solving." },
+];
+
 export const skills = [
   { group: "Languages", items: ["C++", "C", "JavaScript", "SQL"] },
   { group: "Frontend", items: ["React.js", "Next.js", "Tailwind CSS", "HTML", "CSS", "Bootstrap", "jQuery"] },
@@ -215,6 +231,7 @@ export const projects = [
     title: "Comets URL Shortener",
     blurb: "Short links with custom QR codes, one-click sharing and click analytics. Built as a team project.",
     tech: ["Next.js", "Tailwind", "MongoDB", "Redis", "Zod"],
+    live: "https://cometurl.vercel.app",
     code: "https://github.com/VivekCoderz/Comets-URL-Shortener-with-Analytics-",
     accent: "from-violet-500 to-fuchsia-500",
   },
@@ -234,9 +251,17 @@ export const projects = [
     accent: "from-pink-500 to-orange-400",
   },
   {
+    title: "NovaCart",
+    blurb: "Full-stack ecommerce site I'm building from scratch as a daily coding challenge, with search, wishlist, cart and product reviews.",
+    tech: ["React", "Redux", "Node.js", "Express", "MongoDB"],
+    live: "https://novacart-topaz.vercel.app",
+    code: "https://github.com/VivekCoderz/Ecommerce-website-challenge",
+    accent: "from-teal-400 to-blue-500",
+  },
+  {
     title: "Daily Budget Tracker",
-    blurb: "Track daily income and expenses in the browser.",
-    tech: ["JavaScript", "HTML", "CSS"],
+    blurb: "Track daily income and expenses, with sign-in and your data saved to the cloud.",
+    tech: ["React", "Node.js", "Express", "MongoDB", "JWT"],
     live: "https://daily-budget-tracker-one.vercel.app",
     code: "https://github.com/VivekCoderz/Daily-Budget-Tracking-Application",
     accent: "from-lime-400 to-emerald-500",
@@ -246,6 +271,7 @@ export const projects = [
 // Certificates: image files live in public/certificates/. `highlight: true` shows a badge.
 // Categories: Hackathon, Internship, Industry, Certification, Leadership
 export const certificates = [
+  { title: "Participant, Ideathon 2026", issuer: "IEEE Student Branch, Geeta University × Geeta Technical Hub", date: "Oct 2026", category: "Hackathon", img: "ideathon-2026", highlight: true },
   { title: "2nd Position, Internal Smart India Hackathon 2025", issuer: "Geeta University · Team Visioneers", date: "Sep 2025", category: "Hackathon", img: "sih-2025-2nd-position", highlight: true },
   { title: "Team Leader, Internal Smart India Hackathon 2026", issuer: "Geeta University", date: "Oct 2026", category: "Hackathon", img: "sih-2026-team-leader", highlight: true },
   { title: "Top 15 Teams, HackForge 2.0 Hackathon", issuer: "Geeta Technical Hub · Team Infinity Iterators", date: "Apr 2026", category: "Hackathon", img: "hackforge-2-top-15", highlight: true },

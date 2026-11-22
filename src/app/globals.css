@@ -83,6 +83,7 @@ body {
 .marquee {
   animation: marquee 32s linear infinite;
 }
+.marquee-reverse { animation-direction: reverse; }
 .marquee-wrap:hover .marquee {
   animation-play-state: paused;
 }
