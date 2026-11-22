@@ -48,6 +48,18 @@ export function Journey() {
                       </li>
                     ))}
                   </ul>
+                  {t.links && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {t.links.map((l) => {
+                        const Icon = iconFor[l.name] ?? ArrowUpRight;
+                        return (
+                          <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-xs text-muted transition hover:border-white/30 hover:text-ink">
+                            <Icon width={12} height={12} size={12} /> {l.name}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </Reveal>
             );
@@ -148,6 +160,14 @@ function TiltCard({ p, i }) {
                 <GitHubIcon width={14} height={14} /> Code
               </a>
             )}
+            {p.socials?.map((s) => {
+              const Icon = iconFor[s.name];
+              return (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} on ${s.name}`} title={s.name} className="grid size-8 place-items-center rounded-full border border-line text-muted transition hover:border-white/30 hover:text-ink">
+                  <Icon width={14} height={14} />
+                </a>
+              );
+            })}
           </div>
         </div>
       </motion.article>

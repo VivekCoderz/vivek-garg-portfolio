@@ -3,9 +3,10 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, ArrowUpRight, Briefcase, ChevronDown, Flame, GraduationCap, Rocket, Sparkles, Star, Trophy } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BadgeCheck, Briefcase, ChevronDown, Flame, GraduationCap, Rocket, Sparkles, Star, Trophy } from "lucide-react";
 import { Reveal, SectionTitle, Counter } from "./ui";
 import { CertModal } from "./Sections";
+import { iconFor } from "./Icons";
 import { milestones, certificates, skills, projects } from "@/data/profile";
 
 const certByImg = Object.fromEntries(certificates.map((c) => [c.img, c]));
@@ -45,11 +46,11 @@ export function NowBento({ lc }) {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {/* Dhagaro */}
         <Reveal className="md:col-span-2">
-          <a href={dhagaro.live} target="_blank" rel="noopener noreferrer" className="card group relative flex h-full flex-col justify-between overflow-hidden p-6 sm:p-8">
+          <div className="card group relative flex h-full flex-col justify-between overflow-hidden p-6 sm:p-8">
             <div className={`pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-gradient-to-br ${dhagaro.accent} opacity-25 blur-3xl transition-opacity duration-500 group-hover:opacity-45`} />
-            <div className="relative flex items-center justify-between">
+            <div className="relative flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-3 py-1 font-mono text-xs text-accent-3"><Rocket size={13} /> Founder</span>
-              <ArrowUpRight size={20} className="text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" />
+              <span title="Udyam: UDYAM-HR-14-0100594" className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-mono text-xs text-emerald-300"><BadgeCheck size={13} /> MSME registered</span>
             </div>
             <div className="relative mt-10">
               <h3 className="font-display text-3xl font-bold sm:text-4xl">Building <span className="text-gradient">Dhagaro</span></h3>
@@ -57,8 +58,21 @@ export function NowBento({ lc }) {
               <div className="mt-5 flex flex-wrap gap-1.5">
                 {dhagaro.tech.map((t) => <span key={t} className="rounded-md border border-line px-2 py-0.5 font-mono text-[11px] text-muted">{t}</span>)}
               </div>
+              <div className="mt-6 flex flex-wrap items-center gap-2">
+                <a href={dhagaro.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-bg transition hover:bg-accent-2">
+                  Visit store <ArrowUpRight size={14} />
+                </a>
+                {dhagaro.socials?.map((s) => {
+                  const Icon = iconFor[s.name];
+                  return (
+                    <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={`Dhagaro on ${s.name}`} title={s.name} className="grid size-9 place-items-center rounded-full border border-line bg-surface text-muted transition hover:-translate-y-0.5 hover:border-white/30 hover:text-ink">
+                      <Icon width={15} height={15} />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-          </a>
+          </div>
         </Reveal>
 
         {/* Latest certificate */}

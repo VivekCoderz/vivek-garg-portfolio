@@ -118,12 +118,19 @@ export const timeline = [
     type: "work",
     title: "Founder",
     org: "Dhagaro (dhagaro.vercel.app)",
-    period: "2026 – Present",
+    links: [
+      { name: "Website", url: "https://dhagaro.vercel.app" },
+      { name: "Instagram", url: "https://www.instagram.com/dhagaro.in/" },
+      { name: "Facebook", url: "https://www.facebook.com/dhagaro" },
+      { name: "LinkedIn", url: "https://www.linkedin.com/company/dhagaro/" },
+    ],
+    period: "Aug 2026 – Present",
     place: "Panipat",
     points: [
       "Started a home-textile ecommerce brand that sells products from Panipat factories straight to customers, with no stock held.",
       "Built the full store myself: React + Vite frontend, Node/Express + MongoDB backend, Razorpay payments and COD shipping.",
       "Run sourcing, a reseller network and social media with a small team of friends.",
+      "Registered as a Micro enterprise under MSME in Nov 2026 (Udyam: UDYAM-HR-14-0100594), classified for textile retail via e-commerce.",
     ],
   },
   {
@@ -180,14 +187,15 @@ export const timeline = [
 // Home page "Journey" — newest first. `cert` = image name in public/certificates/ (click opens it).
 // kind: award | work | edu | launch | grade
 export const milestones = [
+  { date: "Nov 2026", kind: "launch", title: "Dhagaro registered as an MSME", text: "Officially a Micro enterprise under the Udyam scheme (UDYAM-HR-14-0100594), classified for textile retail via e-commerce." },
   { date: "Oct 2026", kind: "award", title: "Ideathon 2026", text: "Took part in the ideathon run by the IEEE Student Branch with SCSE and Geeta Technical Hub.", cert: "ideathon-2026" },
   { date: "Oct 2026", kind: "award", title: "Team Leader, Internal SIH 2026", text: "Led my team in the internal Smart India Hackathon round.", cert: "sih-2026-team-leader" },
+  { date: "Aug 2026", kind: "launch", title: "Founded Dhagaro", text: "Launched my own home-textile ecommerce store, built end to end by me."},
   { date: "Jun – Jul 2026", kind: "work", title: "Advanced Full Stack Internship", text: "React, Node.js and MongoDB at Geeta University × Geeta Technical Hub.", cert: "full-stack-internship-2026" },
   { date: "May 2026", kind: "grade", title: "SGPA 9.21 in Semester 4", text: "My best semester yet, with A+ in Advanced DSA and Full Stack Development." },
   { date: "May 2026", kind: "award", title: "Deloitte Data Analytics simulation", text: "Completed Deloitte's data analytics job simulation on Forage.", cert: "deloitte-data-analytics" },
   { date: "Apr 2026", kind: "award", title: "Top 15, HackForge 2.0", text: "Made the top 15 teams with Team Infinity Iterators.", cert: "hackforge-2-top-15" },
   { date: "Mar 2026", kind: "launch", title: "Launched HoliTees", text: "Sold custom Holi T-shirts to 30 students and faculty on campus, about ₹6,000 in revenue." },
-  { date: "2026", kind: "launch", title: "Founded Dhagaro", text: "Launched my own home-textile ecommerce store, built end to end by me." },
   { date: "Jan 2026", kind: "award", title: "AWS Solutions Architecture simulation", text: "Completed AWS's solutions architecture job simulation on Forage.", cert: "aws-solutions-architecture" },
   { date: "Sep 2025", kind: "award", title: "2nd Position, Internal SIH 2025", text: "Our team Visioneers placed second in the internal Smart India Hackathon.", cert: "sih-2025-2nd-position" },
   { date: "Feb – Mar 2025", kind: "work", title: "DSA Intern, Coding Blocks", text: "Advanced data structures and algorithms in C++.", cert: "dsa-cpp-coding-blocks" },
@@ -204,10 +212,15 @@ export const skills = [
 export const projects = [
   {
     title: "Dhagaro",
-    blurb: "My own ecommerce store for Panipat home textiles, with COD, Razorpay, a reseller system and a Google Shopping feed.",
+    blurb: "My MSME-registered ecommerce startup for Panipat home textiles, with COD, Razorpay, a reseller system and a Google Shopping feed.",
     tech: ["React", "Node.js", "Express", "MongoDB", "Razorpay"],
     live: "https://dhagaro.vercel.app",
     code: "https://github.com/VivekCoderz/ApnaBazarr",
+    socials: [
+      { name: "Instagram", url: "https://www.instagram.com/dhagaro.in/" },
+      { name: "Facebook", url: "https://www.facebook.com/dhagaro" },
+      { name: "LinkedIn", url: "https://www.linkedin.com/company/dhagaro/" },
+    ],
     accent: "from-amber-400 to-rose-500",
     featured: true,
   },
